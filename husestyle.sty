@@ -1,0 +1,117 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{husestyle}[2026/10/12 Hunan University of Science and Engineering thesis style]
+
+\RequirePackage{geometry}
+\geometry{
+  a4paper,
+  top=2.54cm,
+  bottom=2.54cm,
+  left=3.17cm,
+  right=3.17cm,
+  footskip=1.75cm
+}
+
+\RequirePackage{fontspec}
+\RequirePackage{xeCJK}
+\setmainfont[
+  Path=fonts/,
+  UprightFont=times.ttf,
+  BoldFont=timesbd.ttf,
+  ItalicFont=timesi.ttf,
+  BoldItalicFont=timesbi.ttf
+]{times.ttf}
+\setCJKmainfont[
+  Path=fonts/,
+  AutoFakeBold=2.5,
+  AutoFakeSlant=0.2
+]{simsun.ttc}
+\newCJKfontfamily\heiti[
+  Path=fonts/,
+  AutoFakeBold=2.5
+]{simhei.ttf}
+\newCJKfontfamily\kaishu[
+  Path=fonts/,
+  AutoFakeBold=2.5
+]{simkai.ttf}
+\newCJKfontfamily\fangsong[Path=fonts/]{simfang.ttf}
+
+
+
+\RequirePackage{indentfirst}
+\linespread{1.51}
+\AtBeginDocument{\parindent=2\ccwd}
+
+\ctexset{
+  section = {
+    format={\zihao{3}\bfseries\raggedright},
+    name={,},
+    number={\arabic{section}},
+    aftername={~},
+    beforeskip={0pt},
+    afterskip={12pt},
+    fixskip=true
+  },
+  subsection = {
+    format={\zihao{4}\heiti\raggedright},
+    name={,},
+    number={\arabic{section}.\arabic{subsection}},
+    aftername={~},
+    beforeskip={7.8pt},
+    afterskip={7.8pt},
+    fixskip=true
+  },
+  subsubsection = {
+    format={\zihao{-4}\heiti\raggedright},
+    name={,},
+    number={\arabic{section}.\arabic{subsection}.\arabic{subsubsection}},
+    aftername={~},
+    beforeskip={7.8pt},
+    afterskip={7.8pt},
+    fixskip=true
+  }
+}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\RequirePackage{fancyhdr}
+\fancyhf{}
+\fancyfoot[C]{\zihao{-5}\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{longtable}
+\RequirePackage{multirow}
+\RequirePackage{array}
+\RequirePackage{caption}
+\captionsetup{labelsep=space,justification=centering,font=normalfont}
+\DeclareCaptionFont{wuhao}{\zihao{5}}
+\captionsetup{font=wuhao}
+\captionsetup[figure]{name={图}}
+\captionsetup[table]{name={表}}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\renewcommand{\thefigure}{\thesection-\arabic{figure}}
+\renewcommand{\thetable}{\thesection-\arabic{table}}
+
+\RequirePackage{tocloft}
+\renewcommand{\contentsname}{目\quad 录}
+\renewcommand{\cfttoctitlefont}{\hfill\zihao{3}\heiti}
+\renewcommand{\cftaftertoctitle}{\hfill\mbox{}}
+\renewcommand{\cftsecfont}{\zihao{-4}}
+\renewcommand{\cftsecpagefont}{\zihao{-4}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftsecindent}{0em}
+\setlength{\cftsecnumwidth}{2.2em}
+\setlength{\cftsubsecindent}{2\ccwd}
+\setlength{\cftsubsubsecindent}{4\ccwd}
+
+\newcommand{\fillline}[2]{\underline{\makebox[#1][c]{#2}}}
+\newcommand{\plainsection}[1]{%
+  \clearpage
+  \addcontentsline{toc}{section}{#1}%
+  \begin{center}{\zihao{4}\heiti #1}\end{center}}
+\renewcommand{\arraystretch}{1.25}
+\endinput
