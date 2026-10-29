@@ -22,8 +22,12 @@
   {2022年5月6日}
 
 %======================== 2. 诚信声明 ==================================
-% 声明正文一般无需修改；签名日期如不同，可在导言区
-% \renewcommand{\integritydate}{二〇二二年\hspace{0.3em}五月\hspace{0.3em}六日}
+% 声明正文一般无需修改；签名处两个填写接口（§ 填写后即可生成）：
+%   \integritydate{…}                  ★ 签名日期
+%   \integritysignature[…]{图片路径}    ★ 手写签名图片（把签名拍照/扫描存为
+%                                        图片即可；文件缺失时自动留空，不报错）
+\integritydate{二〇二二年\hspace{0.3em}五月\hspace{0.3em}六日}
+\integritysignature[height=1.2cm]{figures/signature.png}
 \begin{integritystatement}
 本人郑重声明：所呈交的本科毕业论文（设计），是本人在指导老师的指导下，独立进行研究工作所取得的成果，成果不存在知识产权争议，除文中已经注明引用的内容外，本论文不含任何其他个人或集体已经发表或撰写过的作品成果。对本文的研究做出重要贡献的个人和集体均已在文中以明确方式标明。本人完全意识到本声明的法律结果由本人承担。
 \end{integritystatement}

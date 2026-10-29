@@ -289,10 +289,26 @@
 
 %======================================================================
 % 诚信声明：\begin{integritystatement} 声明正文 \end{integritystatement}
-%   标题、正文格式（仿宋四号 1.5 倍行距）与签名区均内置；
-%   签名日期如不同，可在导言区 \renewcommand{\integritydate}{…} 修改。
+%   标题、正文格式（仿宋四号 1.5 倍行距）与签名区均内置。
+%   两个填写接口（在导言区或 \begin{integritystatement} 之前使用）：
+%     ① 日期：\integritydate{二〇二二年五月六日}
+%     ② 签名图片：\integritysignature[height=1.2cm]{figures/signature.png}
+%        方括号为 graphicx 可选参数（可写 width=3.5cm 等，省略时按高度 1.2cm
+%        等比缩放）；图片文件不存在时自动留空并在编译日志给出警告，不会报错。
+%        不使用该命令则只显示“作者签名：”文字。
 %======================================================================
-\newcommand{\integritydate}{二〇二二年\hspace{0.3em}五月\hspace{0.3em}六日}
+% --- 日期：默认“二〇二二年五月六日”，用 \integritydate{…} 改写 ---
+\newcommand{\integritydatetext}{二〇二二年\hspace{0.3em}五月\hspace{0.3em}六日}
+\newcommand{\integritydate}[1]{\renewcommand{\integritydatetext}{#1}}
+% --- 签名图片：默认留空，用 \integritysignature[可选参数]{图片路径} 插入 ---
+\newcommand{\integritysignaturetext}{}
+\newcommand{\integritysignature}[2][height=1.2cm,keepaspectratio]{%
+  \IfFileExists{#2}{%
+    \renewcommand{\integritysignaturetext}{\includegraphics[#1]{#2}}%
+  }{%
+    \renewcommand{\integritysignaturetext}{}%
+    \PackageWarning{husestyle}{诚信声明签名图片 "#2" 未找到，签名处已留空}%
+  }}
 \newenvironment{integritystatement}{%
   \pagestyle{fancy}%
   \pagenumbering{Roman}%
@@ -306,8 +322,13 @@
 }{%
   \vspace{171pt}%             正文与签名的间距（模板实测）
   \begin{flushright}
-  本科毕业论文（设计）作者签名：\\[4.7pt]
-  \integritydate
+  本科毕业论文（设计）作者签名：%
+  \ifx\integritysignaturetext\empty\else
+    \hspace{0.6em}%
+    \smash{\raisebox{\dimexpr0.28em-0.5\height\relax}{\integritysignaturetext}}%
+  \fi
+  \\[4.7pt]
+  \integritydatetext
   \end{flushright}%
   \endgroup
   \clearpage
