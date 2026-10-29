@@ -1,18 +1,46 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{husestyle}[2026/10/12 Hunan University of Science and Engineering thesis style]
+\ProvidesPackage{husestyle}[2026/10/29 Hunan University of Science and Engineering thesis style]
 
+%======================================================================
+% 版式依据：《论文模板2023年5月》中的“注意 / 注意事项 / 重要提示 / 补充说明”
+%   1) 封面：中文楷体小三号加粗居中，西文 Times New Roman 小三号加粗；
+%            英文题名首字母大写，介词、连词不大写。
+%   2) 目录：“目 录”三号黑体不加粗居中，段前 0 段后 1 行；
+%            条目小四宋体（西文 Times New Roman），固定行距 25 磅，段前段后 0；
+%            目录—英文摘要用大写罗马数字编页。
+%   3) 摘要：题目三号黑体居中、单倍行距、段前段后 0、后空一行；
+%            “摘 要”四号黑体居中，后空一行；正文小四宋体，固定行距 20 磅；
+%            关键词小四黑体加粗，分号隔开；英文摘要改用 Times New Roman。
+%   4) 正文：页码阿拉伯数字从 1 开始；每章另起一页；
+%            一级标题三号宋体加粗、单倍行距、段前段后 0；
+%            二级标题四号黑体不加粗、固定行距 20 磅、段前段后 0.5 行；
+%            三级标题小四黑体不加粗、固定行距 20 磅、段前段后 0.5 行；
+%            正文小四宋体、固定行距 20 磅、段前段后 0；
+%            图题在图下方、五号宋体，图号与图名之间空一格；
+%            表名在表上方，表名与表内文字均五号宋体；表格统一三线表。
+%   5) 参考文献：“参考文献”四号黑体居中不加粗，后空一行；
+%            条目小四宋体、固定行距 20 磅、段前段后 0；
+%            编号后空一格，转行与上行作者名首字对齐（悬挂缩进 1.5 字符）。
+%   6) 致谢：“致 谢”四号黑体居中不加粗，后空一行；正文小四宋体，固定行距 20 磅。
+%======================================================================
+
+%---------------------------- 页面 -----------------------------------
 \RequirePackage{geometry}
 \geometry{
   a4paper,
-  top=2.54cm,
-  bottom=2.54cm,
-  left=3.17cm,
+  top=2.54cm,          % 上边距 2.54cm（原模板 1440 缇）
+  bottom=2.54cm,       % 下边距 2.54cm
+  left=3.17cm,         % 封面/目录/摘要：左右 3.17cm（1800 缇）
   right=3.17cm,
-  footskip=1.75cm
+  footskip=12pt        % 页脚距边界 1.75cm，页码位于页脚居中
 }
 
+%---------------------------- 字体 -----------------------------------
 \RequirePackage{fontspec}
 \RequirePackage{xeCJK}
+% ①-⑳、□■ 等符号在西文字体（Times New Roman）中缺失，按中日韩字符处理以使用宋体
+\xeCJKDeclareCharClass{CJK}{"2460 -> "2473, "25A0 -> "25A1}
+% 西文：Times New Roman（小三号加粗用于封面，正文用于正文与英文摘要）
 \setmainfont[
   Path=fonts/,
   UprightFont=times.ttf,
@@ -20,10 +48,15 @@
   ItalicFont=timesi.ttf,
   BoldItalicFont=timesbi.ttf
 ]{times.ttf}
+% 中文正文：宋体
 \setCJKmainfont[
   Path=fonts/,
   AutoFakeBold=2.5,
   AutoFakeSlant=0.2
+]{simsun.ttc}
+\newCJKfontfamily\songti[
+  Path=fonts/,
+  AutoFakeBold=2.5
 ]{simsun.ttc}
 \newCJKfontfamily\heiti[
   Path=fonts/,
@@ -33,85 +66,358 @@
   Path=fonts/,
   AutoFakeBold=2.5
 ]{simkai.ttf}
-\newCJKfontfamily\fangsong[Path=fonts/]{simfang.ttf}
+\newCJKfontfamily\fangsong[
+  Path=fonts/,
+  AutoFakeBold=2.5
+]{simfang.ttf}
+\newCJKfontfamily\zhongsong[                 % 华文中宋（前置各表表头/表标题用）
+  Path=fonts/,
+  AutoFakeBold=2.5
+]{STZHONGS.TTF}
 
-
-
+%------------------------ 正文行距与段落 ------------------------------
+% Word 字号 → 磅：初号42 小初36 一号26 小一24 二号22 小二18 三号16 小三15
+%                  四号14 小四12 五号10.5 小五9
+% Word「单倍行距」≈ 1.486 × 字号（实测：四号 1.5 倍 = 31.2pt，五号 1.25 倍 = 19.5pt）
+%   倍数行距 = 倍数 × 1.486 × 字号；「固定行距 N 磅」= N pt
+%------------------------ 正文行距与段落 ------------------------------
 \RequirePackage{indentfirst}
-\linespread{1.51}
-\AtBeginDocument{\parindent=2\ccwd}
+\linespread{1.385}          % 小四（12pt）× 1.385 ≈ 固定行距 20 磅
+\AtBeginDocument{%
+  \parindent=2\ccwd        % 首行缩进 2 字符
+  \setlength{\parskip}{0pt}% 段前段后 0
+  \setlength{\topskip}{17.8pt}%  首页首行基线与 Word 对齐（12pt/14pt 正文实测 +4.2pt）
+  \hyphenpenalty=10000     % 与 Word 一致：不自动加连字符断词
+  \exhyphenpenalty=50      % 但允许在已有连字符处断行（Word 同样如此），
+                           % 否则 keshiduibi-View-browser 之类会溢出
+}
 
+%---------------------------- 标题 -----------------------------------
 \ctexset{
-  section = {
-    format={\zihao{3}\bfseries\raggedright},
+  section = {                                   % 一级标题：三号宋体加粗
+    format={\zihao{3}\songti\bfseries\raggedright},
     name={,},
     number={\arabic{section}},
-    aftername={~},
+    aftername={\hspace{0.5em}},
     beforeskip={0pt},
-    afterskip={12pt},
+    afterskip={20pt},
     fixskip=true
   },
-  subsection = {
+  subsection = {                                % 二级标题：四号黑体不加粗
     format={\zihao{4}\heiti\raggedright},
     name={,},
     number={\arabic{section}.\arabic{subsection}},
-    aftername={~},
-    beforeskip={7.8pt},
-    afterskip={7.8pt},
+    aftername={\hspace{0.5em}},
+    beforeskip={14pt},
+    afterskip={16pt},
     fixskip=true
   },
-  subsubsection = {
+  subsubsection = {                             % 三级标题：小四黑体不加粗
     format={\zihao{-4}\heiti\raggedright},
     name={,},
     number={\arabic{section}.\arabic{subsection}.\arabic{subsubsection}},
-    aftername={~},
-    beforeskip={7.8pt},
-    afterskip={7.8pt},
+    aftername={\hspace{0.5em}},
+    beforeskip={14pt},
+    afterskip={16pt},
     fixskip=true
   }
 }
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
+% 章首页首行是三号标题，基线比正文页低 3.2pt，故提供一对命令在章标题前后调整
+% \topskip（模板中 Word 的首行位置随字号变化，LaTeX 只能按页设置）
+\newcommand{\chaptertopskip}{\setlength{\topskip}{22.6pt}}
+\newcommand{\normaltopskip}{\setlength{\topskip}{17.8pt}}
+% 每个一级标题即一“章”，另起一页；章首页首行是三号标题，基线比正文页低，
+% 故自动在 \section 前后调整 \topskip（模板中 Word 的首行位置随字号变化，
+% LaTeX 的 \topskip 只能按页设置）。保留 * 与可选短标题；带 * 的不作调整
+% （如参考文献标题用 \section*，由 thebibliography 内部调用）。
+\NewCommandCopy{\huse@orig@section}{\section}
+\RenewDocumentCommand{\section}{s o m}{%
+  \IfBooleanTF{#1}{}{\chaptertopskip}%
+  \IfBooleanTF{#1}{%
+    \huse@orig@section*{#3}%
+  }{%
+    \IfValueTF{#2}{\huse@orig@section[#2]{#3}}{\huse@orig@section{#3}}%
+  }%
+  \IfBooleanTF{#1}{}{\normaltopskip}%
+}
 
+%---------------------------- 页码 -----------------------------------
+% 页码：页脚居中；前置部分罗马数字，正文阿拉伯数字（在 .tex 中切换）
 \RequirePackage{fancyhdr}
 \fancyhf{}
+% 页码：页脚居中、小五号
 \fancyfoot[C]{\zihao{-5}\thepage}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\zihao{-5}\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}}
 
+%-------------------------- 图表题注 ---------------------------------
 \RequirePackage{graphicx}
-\RequirePackage{booktabs}
+\RequirePackage{booktabs}      % 三线表
 \RequirePackage{tabularx}
 \RequirePackage{longtable}
 \RequirePackage{multirow}
 \RequirePackage{array}
 \RequirePackage{caption}
-\captionsetup{labelsep=space,justification=centering,font=normalfont}
-\DeclareCaptionFont{wuhao}{\zihao{5}}
-\captionsetup{font=wuhao}
-\captionsetup[figure]{name={图}}
-\captionsetup[table]{name={表}}
+\DeclareCaptionFont{wuhao}{\zihao{5}\songti}
+\captionsetup{labelsep=space,justification=centering,font=wuhao}
+\captionsetup[figure]{name={图},position=bottom}   % 图题置于图下方
+\captionsetup[table]{name={表},position=top}       % 表名置于表上方
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
 \renewcommand{\thefigure}{\thesection-\arabic{figure}}
 \renewcommand{\thetable}{\thesection-\arabic{table}}
 
-\RequirePackage{tocloft}
-\renewcommand{\contentsname}{目\quad 录}
-\renewcommand{\cfttoctitlefont}{\hfill\zihao{3}\heiti}
-\renewcommand{\cftaftertoctitle}{\hfill\mbox{}}
-\renewcommand{\cftsecfont}{\zihao{-4}}
-\renewcommand{\cftsecpagefont}{\zihao{-4}}
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-\setlength{\cftsecindent}{0em}
-\setlength{\cftsecnumwidth}{2.2em}
-\setlength{\cftsubsecindent}{2\ccwd}
-\setlength{\cftsubsubsecindent}{4\ccwd}
+% 表内文字统一五号宋体（对应提示“表和图里面的字体大小均为五号”）
+\RequirePackage{etoolbox}
+\AtBeginEnvironment{tabular}{\zihao{5}\songti}
+\AtBeginEnvironment{tabularx}{\zihao{5}\songti}
+\AtBeginEnvironment{longtable}{\zihao{5}\songti}
+\renewcommand{\arraystretch}{1.25}                 % 表格 1.25 倍行距
 
-\newcommand{\fillline}[2]{\underline{\makebox[#1][c]{#2}}}
+%---------------------------- 目录 -----------------------------------
+\RequirePackage{tocloft}
+\renewcommand{\contentsname}{目\hspace{0.5em}录}   % “目录”两字中间空半格（模板实测）
+\renewcommand{\cftsecfont}{\zihao{-4}\songti}      % 条目小四宋体（西文 Times）
+\renewcommand{\cftsubsecfont}{\zihao{-4}\songti}
+\renewcommand{\cftsubsubsecfont}{\zihao{-4}\songti}
+\renewcommand{\cftsecpagefont}{\zihao{-4}\songti}
+\renewcommand{\cftsubsecpagefont}{\zihao{-4}\songti}
+\renewcommand{\cftsubsubsecpagefont}{\zihao{-4}\songti}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftparskip}{0pt}                       % 段前段后 0
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\setlength{\cftbeforesubsubsecskip}{0pt}
+% 条目缩进与编号宽度按模板实测值：一级 0/12pt，二级 20.6pt/21pt，三级 41.6pt/30pt
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsecnumwidth}{12pt}
+\setlength{\cftsubsecindent}{20.6pt}
+\setlength{\cftsubsecnumwidth}{21pt}
+\setlength{\cftsubsubsecindent}{41.6pt}
+\setlength{\cftsubsubsecnumwidth}{30pt}
+\renewcommand{\cftdotsep}{0}%              点线间距 3pt（模板实测：点与点间距 = 点宽）
+\cftsetpnumwidth{7pt}%                     点线末端紧邻页码（模板实测）
+
+% 目录：标题“目 录”三号黑体不加粗居中，段前 0 段后 1 行；条目固定行距 25 磅
+% 说明：tocloft 在 \AtBeginDocument 中重定义 \tableofcontents，故此处改写其
+%       内部标题命令 \@cftmaketoctitle，避免被其后续重定义覆盖。
+\newlength{\husetocafterskip}
+\setlength{\husetocafterskip}{40pt}                % 标题段后 1 行
+\renewcommand{\@cftmaketoctitle}{%
+  \begingroup
+    \parindent=0pt
+    \setlength{\topskip}{21pt}%        三号标题：首行基线与模板（92.5pt）对齐
+    {\centering\zihao{3}\heiti\contentsname\par}   % 三号黑体、不加粗、居中
+    \vspace{\husetocafterskip}                     % 段后 1 行
+    \setlength{\topskip}{17.8pt}
+  \endgroup
+  \linespread{1.731}\selectfont}                   % 条目固定行距 25 磅
+
+%-------------------------- 参考文献 ---------------------------------
+% 编号 [n] 后空一格；条目悬挂缩进 1.5 个字符，转行与上行作者名首字对齐
+\renewcommand{\@biblabel}[1]{[#1]\hspace{0.25em}}
+\patchcmd{\thebibliography}%      % 把 \leftmargin 由“编号宽+间隔”改为 1.5 字符
+  {\leftmargin\labelwidth\advance\leftmargin\labelsep}%
+  {\leftmargin1.5\ccwd}%
+  {}%
+  {\typeout{HUSESTYLE: WARNING - thebibliography patch failed, hanging indent not applied}}
+
+%-------------------------- 辅助命令 ---------------------------------
+% 封面/表格用下划线填空（居中）
+% 说明：\underline 会切到数学模式而丢失外层中文字体，故这里直接用横线实现，
+%       以保证封面填写内容沿用外部的楷体。
+\newcommand{\fillline}[2]{%
+  \leavevmode
+  \hbox to #1{\hss #2\hss}%
+  \llap{\rule[-0.35em]{#1}{0.4pt}}}
+% 无编号的一级标题（参考文献、致谢等）：四号黑体居中，另起一页并进目录
 \newcommand{\plainsection}[1]{%
   \clearpage
   \addcontentsline{toc}{section}{#1}%
-  \begin{center}{\zihao{4}\heiti #1}\end{center}}
-\renewcommand{\arraystretch}{1.25}
+  {\parindent=0pt\centering\zihao{4}\heiti #1\par}%
+  \vspace{\baselineskip}}          % 标题后空一行
+
+%======================================================================
+% 封面：\makecover{中文题目}{英文第一行}{英文第二行}{姓名}{学号}
+%                  {院（系）}{专业、年级}{指导教师}{日期}
+%   标签列/填写列宽度、行距、横幅尺寸等均按模板 PDF 实测并内置，
+%   只需替换上方 9 个参数即可。
+%======================================================================
+\newcommand{\coverlabel}[1]{\makebox[3.44cm][l]{\hspace{4.75pt}\zihao{3}\heiti #1}}
+\newcommand{\coverfill}[1]{\makebox[9.25cm][c]{\zihao{-3}\kaishu\bfseries\fillline{8.9cm}{#1}}}
+\newcommand{\makecover}[9]{%
+  \pagestyle{empty}%
+  \begin{center}
+    \vspace*{5.7pt}%     模板中横幅顶部与版心的间距
+    % 模板中横幅为 412.8pt×162pt（竖向拉伸，非等比缩放），故显式指定高度
+    \includegraphics[width=14.6cm,height=5.715cm]{figures/banner_school.png}\par
+    \vspace{-10.9pt}%    使大标题基线与模板一致
+    {\zihao{-0}\heiti 本科学生毕业论文（设计）\par}%
+  \end{center}%
+  \vspace{39.0pt}%
+  \begin{center}
+  \begin{tabular}{@{}l@{}l@{}}
+  \coverlabel{题目\zihao{-4}(中文)：} & \coverfill{#1}\\[6pt]
+  \coverlabel{\zihao{-4}\qquad\quad(英文)：} &
+    \makebox[9.25cm][c]{\zihao{-3}\kaishu\bfseries
+      \vtop{\hbox to 8.9cm{\hss #2\hss}\vskip 6.2pt
+            \hrule height 0.4pt\vskip 10.9pt
+            \hbox to 8.9cm{\hss #3\hss}\vskip 8.7pt
+            \hrule height 0.4pt}}\\[43.5pt]
+  \coverlabel{姓\qquad 名} & \coverfill{#4}\\[9.3pt]
+  \coverlabel{学\qquad 号} & \coverfill{#5}\\[9.3pt]
+  \coverlabel{院\quad（系）} & \coverfill{#6}\\[9.3pt]
+  \coverlabel{专业、\kern-5.7pt 年级} & \coverfill{#7}\\[9.3pt]
+  \coverlabel{指导教师} & \coverfill{#8}\\
+  \end{tabular}
+  \end{center}%
+  \vspace{27.3pt}%
+  \begin{center}
+    {\zihao{3}\heiti #9\par}%
+  \end{center}%
+  \clearpage
+}
+
+%======================================================================
+% 诚信声明：\begin{integritystatement} 声明正文 \end{integritystatement}
+%   标题、正文格式（仿宋四号 1.5 倍行距）与签名区均内置；
+%   签名日期如不同，可在导言区 \renewcommand{\integritydate}{…} 修改。
+%======================================================================
+\newcommand{\integritydate}{二〇二二年\hspace{0.3em}五月\hspace{0.3em}六日}
+\newenvironment{integritystatement}{%
+  \pagestyle{fancy}%
+  \pagenumbering{Roman}%
+  \setlength{\topskip}{24pt}%  本页标题为小二，首行基线需再下移（模板实测）
+  \begin{center}
+    {\zihao{-2}\heiti 湖南科技学院本科毕业论文（设计）诚信声明\par}%
+  \end{center}%
+  \setlength{\topskip}{17.8pt}%
+  \vspace{70pt}%              标题与正文的间距（模板实测）
+  \begingroup\zihao{4}\fangsong\linespread{1.857}\selectfont% 四号 1.5 倍行距 = 31.2pt
+}{%
+  \vspace{171pt}%             正文与签名的间距（模板实测）
+  \begin{flushright}
+  本科毕业论文（设计）作者签名：\\[4.7pt]
+  \integritydate
+  \end{flushright}%
+  \endgroup
+  \clearpage
+}
+
+%======================================================================
+% 中文/英文摘要：\begin{cnabstract}{论文题目}{关键词} 摘要正文 \end{cnabstract}
+%               \begin{enabstract}{英文题目}{Keywords} 摘要正文 \end{enabstract}
+%   题目、摘 要/Abstract 标题、关键词格式均已内置，环境内只写正文。
+%======================================================================
+\newenvironment{cnabstract}[2]{%
+  \def\cnabstract@kw{#2}%
+  {\parindent=0pt\centering
+    \setlength{\topskip}{21pt}%
+    \zihao{3}\heiti #1\par
+    \vspace{38pt}%            题目后空一行
+    \zihao{4}\heiti 摘\hspace{0.5em}要\par
+    \setlength{\topskip}{17.8pt}%
+  }%
+  \vspace{38pt}%              “摘 要”后空一行
+}{%
+  \vspace{1em}%
+  \noindent{\zihao{-4}\heiti\textbf{【关键词】}}\cnabstract@kw
+  \clearpage
+}
+\newenvironment{enabstract}[2]{%
+  \def\enabstract@kw{#2}%
+  {\parindent=0pt\centering
+    \setlength{\topskip}{21pt}%
+    {\zihao{3}\bfseries #1\par}%
+    \vspace{38pt}%            题目后空一行
+    {\zihao{4}\bfseries Abstract\par}%
+    \setlength{\topskip}{17.8pt}%
+  }%
+  \vspace{38pt}%              “Abstract”后空一行
+}{%
+  \vspace{1em}%
+  \noindent{\zihao{-4}\heiti【}\textbf{Keywords}{\heiti】}\enabstract@kw
+  \clearpage
+}
+
+%======================================================================
+% 目录 / 正文起始：\maketoc 与 \startmainbody
+%   \maketoc       ：罗马数字页码从 II 起（诚信声明为 I），生成目录
+%   \startmainbody ：切换为正文页边距 + 阿拉伯页码从 1 起
+%======================================================================
+\newcommand{\maketoc}{%
+  \pagestyle{fancy}%
+  \setcounter{page}{2}%       目录 = II、III；摘要 = IV、V（同原文档）
+  \tableofcontents
+  \clearpage
+}
+\newcommand{\startmainbody}{%
+  % 模板中 Word 的首行位置随字号变化（LaTeX 的 \topskip 只能按页统一设置），
+  % 实测正文小四的首行盒高比模板大 1.6pt，故正文页版心上移 1.6pt 作整体补偿
+  \newgeometry{top=2.4836cm, bottom=2.54cm, left=2.5cm, right=2.5cm,
+               footskip=12pt}%
+  \setlength{\topskip}{17.8pt}%  \newgeometry 会重置 \topskip，这里恢复
+  \pagenumbering{arabic}%
+}
+
+%======================================================================
+% 参考文献：\begin{references} \bibitem{...}… \end{references}
+%   标题“参考文献”四号黑体居中不加粗、悬挂缩进 1.5 字符、编号后空一格、
+%   条目小四宋体固定行距 20 磅，均按模板内置；只需填写 \bibitem 条目。
+%======================================================================
+\newenvironment{references}{%
+  \begingroup
+  \ctexset{section/format={\centering\zihao{4}\heiti},   % 标题黑体四号居中、不加粗
+           section/beforeskip={0pt},
+           section/afterskip={0pt}}                      % 段前段后 0
+  \renewcommand{\refname}{参考文献}%
+  \zihao{-4}\songti\setlength{\itemsep}{0pt}%
+  \setlength{\leftmargin}{1.5\ccwd}%                     % 悬挂缩进 1.5 个字符
+  \setlength{\labelsep}{2pt}%                            % 编号与正文之间空一格
+  \begin{thebibliography}{99}%
+  \addcontentsline{toc}{section}{参考文献}%
+  \vspace{\baselineskip}%                                % 标题后空一行
+}{%
+  \end{thebibliography}%
+  \endgroup
+  \clearpage
+}
+
+%========================== 前置表格（任务书等） =======================
+% 版式（模板提示）：表格中所有文字均为五号宋体、1.25 倍行距（=19.5 磅），
+%                   西文 Times New Roman；所有表头里的文字居中。
+\RequirePackage{xltabular}%   longtable + tabularx：可跨页且支持 X 列
+\newcommand{\formfont}{\zihao{5}\linespread{1.548}\selectfont}% 10.5pt×1.486×1.25
+% 注意：tabularx/xltabular 需要在源码中出现字面的 \end{xltabular}，
+%       故这里不用 \newenvironment 包装，而用两条命令 + 直接使用 xltabular。
+\newcommand{\formtablesetup}{%
+  \formfont
+  \setlength{\topskip}{0pt}%  取消首页基线自动下移，便于精确对齐模板行位置
+  \renewcommand{\arraystretch}{1}%
+  \setlength{\extrarowheight}{0pt}%  实测：Word 表格行高 = 行数 × 行距，无额外内边距
+  \renewcommand{\tabularxcolumn}[1]{m{##1}}%  单元格内容垂直居中（同 Word vAlign）
+  \setlength{\tabcolsep}{3pt}}
+% #1 = 表格总宽度：表格比版心宽时左右均分溢出，使其相对版心居中
+\newcommand{\formtabwidth}[1]{%
+  \setlength{\LTleft}{\dimexpr(\textwidth-#1)/2\relax}%
+  \setlength{\LTright}{\fill}}
+% 表单里的多行文本（单元格内的段落）；\find 为缩进 2 字符的段落
+\newcommand{\formcell}[1]{{\parindent=0pt\parskip=2pt\leftskip=0pt #1}}
+\newcommand{\formcellL}[1]{{\parindent=0pt\parskip=2pt\raggedright #1}}%  左对齐（不两端对齐）
+\newcommand{\find}[1]{\par\setlength{\leftskip}{2\ccwd}\setlength{\parindent}{0pt}#1\par}
+% 评审表摘要栏：模板中该行为空白大行（约 500pt），此处填好摘要后仍补足高度，
+% 保证版式与模板一致；内容过长时行高会自动增加。
+\newcommand{\formabstract}[2]{#2\par\vspace{#1}\mbox{}}
+% 表单标题：#1 行距倍数(相对 \zihao 默认行距)  #2 字号命令  #3 文字
+\newcommand{\formtitle}[3]{%
+  \par{\parindent=0pt\centering\zhongsong\linespread{#1}\selectfont #2 #3\par}}
 \endinput

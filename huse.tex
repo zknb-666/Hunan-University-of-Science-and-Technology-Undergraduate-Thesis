@@ -7,109 +7,57 @@
 \pagestyle{empty}        % 封面至答辩记录表：不编页码（同原文档）
 
 %============================ 1. 封面 =================================
-% 原版式：页面顶部为校名/校徽横幅图片（原DOCX image1.png，约14.6cm宽）；
-%         大标题黑体小初(36pt)；信息栏楷体小三(15pt)；日期黑体三号
-\begin{center}
-  \includegraphics[width=14.6cm]{figures/banner_school.png}\par
-  \vspace{1.5em}
-  {\zihao{-0}\heiti 本科学生毕业论文（设计）\par}
-\end{center}
-
-\vspace{1.2cm}
-% ---- 封面信息表（楷体小三，下划线填写；★ 替换为你的论文信息）----
-{\zihao{-3}\kaishu
-\begin{center}
-\begin{tabular}{r@{}l}
-\heiti{题目\zihao{-4}(中文)}： & \fillline{9.6cm}{\textbf{基于Java的增值平台的设计与实现}}\\[1.4em]
-\heiti{\zihao{-4}（英文）}：   & \fillline{9.6cm}{\textbf{\shortstack{The Design and Implementation of\\Value - added Platform Based on Java}}}\\[1.4em]
-\heiti{姓\quad\quad 名\quad} & \fillline{9.6cm}{\textbf{XXX}}\\[1.4em]
-\heiti{学\quad\quad 号\quad} & \fillline{9.6cm}{\textbf{201408001104}}\\[1.4em]
-\heiti{院\quad（系）} & \fillline{9.6cm}{\textbf{信息工程学院}}\\[1.4em]
-\heiti{专业、年级}    & \fillline{9.6cm}{\textbf{计算机科学与技术2014级}}\\[1.4em]
-\heiti{指导教师\quad}      & \fillline{9.6cm}{\textbf{XXX（职称）、企业导师姓名（职称）}}\\
-\end{tabular}
-\end{center}
-}%
-
-\vfill
-% ---- 封面日期（黑体三号居中）----
-\begin{center}
-  {\zihao{3}\heiti 2022年5月6日\par}
-\end{center}
-\clearpage
+% 参数：{中文题目}{英文第一行}{英文第二行}{姓名}{学号}
+%       {院（系）}{专业、年级}{指导教师}{日期}
+% ★ 替换为你的论文信息（标签列宽、行距、横幅尺寸等样式已内置在 husestyle.sty）
+\makecover
+  {基于Java的增值平台的设计与实现}
+  {The Design and Implementation of}
+  {Value-Added Platform Based on Java}
+  {XXX}
+  {201408001104}
+  {信息工程学院}
+  {计算机科学与技术2014级}
+  {XXX（职称）、企业导师姓名（职称）}
+  {2022年5月6日}
 
 %======================== 2. 诚信声明 ==================================
-% 原版式：标题黑体小二(18pt)居中；正文仿宋四号(14pt)、1.5倍行距、首行缩进2字符
-\begin{center}
-  {\zihao{-2}\heiti 湖南科技学院本科毕业论文（设计）诚信声明\par}
-\end{center}
-
-{\zihao{4}\fangsong\linespread{1.5}\selectfont
+% 声明正文一般无需修改；签名日期如不同，可在导言区
+% \renewcommand{\integritydate}{二〇二二年\hspace{0.3em}五月\hspace{0.3em}六日}
+\begin{integritystatement}
 本人郑重声明：所呈交的本科毕业论文（设计），是本人在指导老师的指导下，独立进行研究工作所取得的成果，成果不存在知识产权争议，除文中已经注明引用的内容外，本论文不含任何其他个人或集体已经发表或撰写过的作品成果。对本文的研究做出重要贡献的个人和集体均已在文中以明确方式标明。本人完全意识到本声明的法律结果由本人承担。
+\end{integritystatement}
 
-\vspace{3em}
-\begin{flushright}
-本科毕业论文（设计）作者签名：\\[1.5em]
-二〇二二年\quad 五月\quad 六日
-\end{flushright}
-}
-\clearpage
-
-%======================================================================
-%                  以下开始编页码：目录/摘要用罗马数字
-%======================================================================
-\pagenumbering{Roman}      % 大写罗马数字 I、II、III、IV（同原文档）
-\pagestyle{fancy}          % 页码居中页脚，无页眉
 
 %======================== 3. 目录 ======================================
-\tableofcontents
-\clearpage
+\maketoc
 
 %======================== 4. 中文摘要 ==================================
-% 原版式：论文题目黑体三号(16pt)居中；"摘 要"黑体四号(14pt)居中；
-%         正文宋体小四、行距20磅、首行缩进2字符；【关键词】黑体小四
+% 参数：{论文题目}{关键词（分号隔开）}；环境内为正文
 %         ★ 替换为你自己的论文题目、摘要与关键词
-\begin{center}
-  {\zihao{3}\heiti 基于大数据的永州市医疗运行分析系统的设计与实现\par}
-  \vspace{0.8em}
-  {\zihao{4}\heiti 摘\quad\quad 要\par}
-\end{center}
-
-\vspace{0.5em}
+\begin{cnabstract}{基于大数据的永州市医疗运行分析系统的设计与实现}{Java；web；预测；医疗分析}
 工业4.0的到来，大数据成为这个时代的主题。随着我国网络基础信息与数字产业的发展，许多传统行业中会产生海量数据，而如何从海量数据中提取到有价值的信息，并且对这些信息进行分析，加工，传递并与传统行业相结合，显得尤为重要，而大数据的思想也在各个领域崭露头角，逐步形成以大数据为驱动融合传统行业的新趋势。
 
 医疗是国计民生的大事，创建一个以大数据为基础的地区医疗运行分析系统，可以将这些数据进行科学的分类、存储，以这些已知的数据为基础，通过统计学，数学等建立模型将结果进行加工，最后通过饼图、柱状图、散点图等图表实现数据可视化，更好的监控并预测地区医疗发展状况与趋势。本系统采用web平台，利用MVC的设计架构与软件工程的设计思想，通过使用数据可视化展示以及加权平均法、移动平均法等计算模型，实现了动态的追踪不同时间、医疗种类、地点的医疗运行的状态，对于不同医院及地区形成针对性的决策的功能。模拟测试分析表明整个系统具备更精准、完备、个性的地区医疗运行分析功能。
-
-\vspace{1em}
-\noindent{\heiti【\textbf{关键词}】}Java；web；预测；医疗分析
-\clearpage
+\end{cnabstract}
 
 %======================== 5. 英文摘要 =================================
-% 原版式：题目 Times New Roman Bold 三号；"Abstract" Times Bold 四号；
-%         正文 Times 小四；【Keywords】中【】为黑体、Keywords 加粗
+% 参数：{英文题目}{Keywords（半角分号）}；环境内为正文
 %         ★ 替换为你自己的英文题目、摘要与关键词
-\begin{center}
-  {\zihao{3}\bfseries Design and Implementation of Yongzhou Medical Operation Analysis System Based on Big Data\par}
-  \vspace{0.8em}
-  {\zihao{4}\bfseries Abstract\par}
-\end{center}
-
-\vspace{0.5em}
+\begin{enabstract}{Design and Implementation of Yongzhou Medical Operation Analysis System Based on Big Data}{Java; web; prediction; Medical analysis}
 With the advent of Industry 4.0, big Data has become the theme of this era. With the development of basic information and digital industry in China, many traditional industries will generate huge amounts of data, so it is particularly important to how to extract valuable information from the massive data, and analyze, process, transfer and integrate these information with traditional industries. And the idea of big data is also emerging in various fields, gradually forming a new trend of driving the integration of traditional industries with big data.
 
+\begin{sloppypar}%  英文长句不自动断词，允许 Word 那样的松散行，避免溢出版心
 Medical care is a major event in the national economy and people's livelihood. To create a regional medical operation analysis system based on big data, so these data can be scientifically classified and stored. We can process the results based on these known data, and established models through statistics and mathematics. And finally through the pie chart, histogram, scatter charts and other charts we can achieve data visualization, which can be better to monitor and forecast regional medical development status and trends. This system adopts a web platform and uses MVC's design architecture and software engineering design concepts to achieve dynamic tracking of medical operations at different times, medical types, and locations by using data visualization, weighted average method, and moving average method, and forms targeted decision-making function for different hospitals and regions. The simulation test analysis shows that the entire system has more accurate, complete, and individual regional medical operation analyzing capabilities.
+\end{sloppypar}
 
-\vspace{1em}
-\noindent{\heiti【}\textbf{Keywords}{\heiti】}Java; web; prediction; Medical analysis
-\clearpage
+\end{enabstract}
 
 %======================================================================
 %      正文部分：换用正文页边距（左右2.50cm），阿拉伯页码从 1 开始
+%      （\startmainbody 内的版心上移 1.6pt、首行基线等样式已内置在 husestyle.sty）
 %======================================================================
-\newgeometry{top=2.54cm, bottom=2.54cm, left=2.5cm, right=2.5cm,
-             footskip=1.75cm
-             }
-\pagenumbering{arabic}
+\startmainbody
 
 %======================== 第 1 章 ======================================
 \section{绪论}                     % 章标题：宋体三号加粗，形如"1 绪论"
@@ -122,17 +70,23 @@ Medical care is a major event in the national economy and people's livelihood. T
 该课题就是在这样的背景下产生，通过模拟永州市的医疗运行环境，制造出相关的模拟数据进行系统的测试与运行。可以直观的从大量数据中得到有价值的信息，同时与国家相关政策所结合，从而做到分析预警、总体规划、疾控与服务强度预测等功能，为整个地区医疗服务至医院实体做好监控与预测。
 
 \subsection{国内外研究对比}
+% 说明：模板 docx 中本节（1.2）各段的首行缩进是 21pt（Word「2 字符」按五号
+%       10.5pt 折算），与其余段落的 24pt 不同；为与模板逐行一致，这里原样还原。
+\setlength{\parindent}{21pt}
 大数据具有五大特性，大量性、多样性、快速性、价值性与真实性，从大量的数据中快速的获得高价值的信息就成了大数据研究的课题。在早期，与医疗相关数据基本上都是纸质化的，但是随着信息行业的发展医疗数据快速的爆发，移动互联网、大数据与云计算等多种技术手段与传统医疗行业跨界结合，为医疗服务带来了更大的变化，更过的机遇。
 
 在目前，医疗大数据有如下的应用。从使用人员的角度上来说，从管理者的角度，大数据技术可以用来大量的挖掘、分析、检测数据，从而为医疗管理系统、多层信息平台提供技术支持与数据支撑；从医生的角度，大数据技术可以向医生提供数据支持以及病情辅助决策等功能，减少医生的误判率，提高工作效率；从患者的角度，大数据技术可以支持个人医疗，对居民身体提供个性化精准的检测提醒，对患者实行疾病监控，更好的支持患者治疗。
 
-现在国内外比较成熟的技术分布于临床辅助决策、医疗科研与健康预测三个方面。在传统的医疗行业，医生依靠患者的信息以及自己的经验、知识对患者进行诊断治疗，导致部分决策不精准，局限性很大。通过将患者的信息、检查报告等相关医疗数据通过大数据系统做匹配，从而得到更好的、更加针对于患者的个性化治疗方案，提供给医生相关的决策支撑，使得医生更好的了解掌握病人的病情作出相应的治疗方案。
+现在国内外比较成熟的技术分布于临床辅助决策、医疗科研与健康预测三个方面。
+
+在传统的医疗行业，医生依靠患者的信息以及自己的经验、知识对患者进行诊断治疗，导致部分决策不精准，局限性很大。通过将患者的信息、检查报告等相关医疗数据通过大数据系统做匹配，从而得到更好的、更加针对于患者的个性化治疗方案，提供给医生相关的决策支撑，使得医生更好的了解掌握病人的病情作出相应的治疗方案。
 
 在医疗科研方面，将一段时间内的数据进行筛选、整理、分析、数据可视化，可以详细的根据不同时间、不同地点、不同人群等多种元素，结合个人、心理、社会、经济等因素研究疾病病发的特征，从而得出该种疾病的产生原因及治疗方法。
 
 在健康监测方面，多种体感式监测设备已经广泛使用，配合每一位居民的健康档案、体检信息等为居民提供足不出户的疾病预测以及治疗方案，通过大数据技术整合这些数据，为居民提供更加个性化的健康管理方案。
 
 \subsection{课题研究的主要内容}
+\setlength{\parindent}{2\ccwd}% 恢复其余段落的 24pt 首行缩进
 通过了解并发现以上地区医疗痛点，本系统主要开发一个基于web平台，利用MVC的设计模型，使用多种计算模型以及数据可视化的设计方法对本系统进行开发。实现了对已有的繁杂数据通过大数据进行分析、整理、展示，从而为使用者提供整体趋势，疾控与服务强度预测等功能，同时实现了医疗运行分析，决策支撑等功能辅助使用者更加直观的进行数据查看，提高数据分析的效率，并且利用多种计算模型使用已有数据进行预测，从而使得数据与监测预警、实时决策结合在一起，并且完成了系统与数据的管理功能。
 
 \subsection{论文组织结构}
@@ -157,7 +111,9 @@ Medical care is a major event in the national economy and people's livelihood. T
 \clearpage                        % 每章另起一页
 
 %======================== 第 2 章 ======================================
+
 \section{相关技术简介}
+
 
 \subsection{Java简介}
 Java隶属于SUN公司，于2009年SUN公司被甲骨文收购。前身Oak语言，由于1995年互联网的蓬勃发展给了Oak机会，由于它是按照嵌入式系统硬件平台体系结构进行编写的，所以非常小，特别适用于网络上的传输系统，而Oak也是一种精简的语言，程序非常小，适合在网络上传输[1]。Sun公司首先推出了可以嵌入网页并且可以随同网页在网络上传输的Applet（Applet是一种将小程序嵌入到网页中进行执行的技术）。在申请注册商标时，发现Oak已经被人使用了，再想了一系列名字之后，最终，使用了提议者在喝一杯Java咖啡时无意提到的Java词语，并将Oak更名为Java。1996年1月，SUN公司发布了Java的第一个开发工具包JDK 1.0。1997年2月Sun公司在Java One开发者大会上宣布开放Java核心源代码，以鼓励更多的人参与到Java社团活动中。
@@ -196,7 +152,9 @@ Spring是一个轻量级的Java框架兴起于2003年……
 \clearpage
 
 %======================== 第 3 章 ======================================
+
 \section{系统需求分析}
+
 
 \subsection{总体定位与建设目标}
 Spring是一个轻量级的Java框架兴起于2003年Spring是一个轻量级的Java框架兴起于2003年Spring是一个轻量级的Java框架兴起于2003年Spring是一个轻量级的Java框架兴起于2003年……
@@ -233,7 +191,9 @@ AngluarJS诞生于2009年，由Misko Hevery等人创建，后为Google所收购�
 \clearpage
 
 %======================== 第 4 章（含三线表示例）=======================
+
 \section{系统总体设计}
+
 
 \subsection{总体设计原则及方法}
 （1）整体规划设计
@@ -301,7 +261,9 @@ AngluarJS诞生于2009年，由Misko Hevery等人创建，后为Google所收购�
 \clearpage
 
 %======================== 第 5 章 ======================================
+
 \section{系统功能的实现}
+
 
 本节主要描述需求中各功能设计的实现思路及方法，以下将分为数据分析展示，决策支持，系统基础功能，系统管理功能四个方面进行描述。
 
@@ -335,7 +297,9 @@ AngluarJS诞生于2009年，由Misko Hevery等人创建，后为Google所收购�
 \clearpage
 
 %======================== 第 6 章 ======================================
+
 \section{测试}
+
 
 软件工程的测试包括技术方向的测试以及工程方向的测试两部分，通过对于软件产品这两部分的测试，尽量多的发现测试过程中所出现的软件缺陷，降低软件在上线以后出现常识性错误以及影响整个系统运行的错误。
 
@@ -358,7 +322,9 @@ AngluarJS诞生于2009年，由Misko Hevery等人创建，后为Google所收购�
 \clearpage
 
 %======================== 第 7 章 ======================================
+
 \section{总结与展望}
+
 
 \subsection{全文工作总结}
 本文设计并实现了基于大数据的永州市医疗运行分析系统，是大数据与传统行业相结合，展露新头角的一种尝试。基于大数据的永州市医疗运行分析系统的设计与实现，对于未来探索数据驱动传统行业起的了一定的帮助。本文对大数据分析系统的开发与设计的总结包括以下三点：
@@ -372,15 +338,12 @@ AngluarJS诞生于2009年，由Misko Hevery等人创建，后为Google所收购�
 \clearpage
 
 %======================== 参考文献 =====================================
-% 原版式：标题"参考文献"黑体四号居中；条目宋体小四，悬挂缩进，[n] 编号
-%         ★ 参考文献按国标 GB/T 7714 著录，此处沿用原文示例
-\begingroup
-\ctexset{section/format={\centering\zihao{4}\heiti}}   % 让 thebibliography 的标题黑体四号居中
-\renewcommand{\refname}{参考文献}
-\begin{thebibliography}{9}
-\addcontentsline{toc}{section}{参考文献}
-\zihao{-4}\setlength{\itemsep}{2pt}
-
+% 版式（模板提示）："参考文献"四号黑体居中、不加粗、固定行距20磅、段前段后0，后面空一行；
+%         条目小四宋体、固定行距20磅、段前段后0；编号后空一格；
+%         转行时与上行作者名首字对齐（悬挂缩进）；半角标点后跟一个空格。
+%         补充说明：参考文献要求 20 篇左右，按 GB/T 7714 著录，此处沿用原文示例。
+%         ★ 请补充至 20 篇左右，并删除条目末尾的"（XX格式）"字样
+\begin{references}
 \bibitem{ref1} Vu K, Zheng R, Gao J. Efficient algorithms for k-anonymous location privacy in participatory sensing[C]//Proceedings of the IEEE International Conference on Computer Communications (INFOCOM). IEEE, 2012: 2399-2407.(国际会议格式)
 
 \bibitem{ref2} 赵婧, 张渊, 李兴华, 等. 基于轨迹频率抑制的轨迹隐私保护方法[J]. 计算机学报, 2014, 37(10): 2096-2106. (中文期刊格式)
@@ -392,10 +355,7 @@ AngluarJS诞生于2009年，由Misko Hevery等人创建，后为Google所收购�
 \bibitem{ref5} 胡秀娟. 大数据时代新闻可视化的媒介环境学研究[D]. 西南政法大学, 2015.(学位论文格式)
 
 \bibitem{ref6} Craig Walls, Ryan BreidenBach. Spring In Action[M]. Manning Publications. 2006.(书籍格式).
-
-\end{thebibliography}
-\endgroup
-\clearpage
+\end{references}
 
 %======================== 致谢 =========================================
 % 原版式：标题"致 谢"黑体四号居中；正文宋体小四
