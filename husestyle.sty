@@ -181,6 +181,80 @@
 \AtBeginEnvironment{longtable}{\zihao{5}\songti}
 \renewcommand{\arraystretch}{1.25}                 % 表格 1.25 倍行距
 
+%---------------------- 图表自动编号与自动引用 -----------------------
+% \fig / tbl 会自动产生编号（图X-X / 表X-X）与 \label，不用手写任何编号；
+% 正文引用写成 \figref{图题} / \tabref{表题}，自动输出“图2-1”/“表4-1”，
+% 增删图表导致编号变化时正文无需改动（需编译两遍）。
+%   例：Mybatis工作流程如图\figref{SpringMVC实现原理}所示。
+\newcommand{\husenewlabel}[3]{\global\@namedef{huse@#1@\detokenize{#2}}{#3}}
+\newcommand{\huselabel}[2]{%  #1 = fig/tab   #2 = 图题 / 表题
+  \protected@write\@auxout{}{\string\husenewlabel{#1}{\detokenize{#2}}{\@currentlabel}}}
+\newcommand{\huseref}[2]{%   #1 = fig/tab   #2 = 图题 / 表题
+  \@ifundefined{huse@#1@\detokenize{#2}}%
+    {\textbf{??}\PackageWarning{husestyle}{未找到“#2”的编号，请再编译一次}}%
+    {\@nameuse{huse@#1@\detokenize{#2}}}}
+% \figref{图题} 只输出编号（2-1），适合“如图\figref{…}所示”；
+% \figref*{图题} 输出“图2-1”，适合“见\figref*{…}”这类独立引用。表同理。
+\NewDocumentCommand{\figref}{s m}{%
+  \IfBooleanTF{#1}{图\huseref{fig}{#2}}{\huseref{fig}{#2}}}
+\NewDocumentCommand{\tabref}{s m}{%
+  \IfBooleanTF{#1}{表\huseref{tab}{#2}}{\huseref{tab}{#2}}}
+
+%---------------------- 插图 / 表格的简化写法 -------------------------
+% 插图：\fig[宽度]{图片文件名}{图题}[引用标签]
+%   宽度省略时为 0.8\textwidth；写 [14.6cm] 或 [width=14.6cm] 都可以，
+%   也可写 graphicx 的完整参数（如 [width=8cm,angle=90]）；
+%   文件名默认在 \figpath（= figures/）目录下，也可写完整路径；
+%   居中、图题（五号宋体居中）、编号（图X-X）、浮动位置 htbp 全部内置；
+%   编号与 \label 均自动生成（默认标签 fig:图号），末尾的引用标签可省略。
+%   图片找不到时只给警告并留占位框，不中断编译。
+%   例：\fig[14.6cm]{fig2-1_springmvc.png}{SpringMVC实现原理}
+\newcommand{\figpath}{figures/}%   图片默认目录（用 \setfigpath{…} 可改）
+\newcommand{\setfigpath}[1]{\renewcommand{\figpath}{#1}}
+% 图片缺失时的占位框（文件名用 \detokenize，避免下划线被当作下标）
+\newcommand{\fig@missing}[1]{%
+  \PackageWarning{husestyle}{图片文件 "\detokenize{#1}" 未找到，已用占位框代替}%
+  \fbox{\parbox[c][1.4cm][c]{0.8\textwidth}%
+    {\centering\zihao{5}\songti 缺少图片：\texttt{\detokenize{#1}}}}}%
+% #1 = 宽度值   #2 = 文件名（先按原样找，再按 \figpath 前缀找）
+\newcommand{\fig@imgw}[2]{%
+  \IfFileExists{#2}{\includegraphics[width=#1]{#2}}{%
+    \IfFileExists{\figpath #2}{\includegraphics[width=#1]{\figpath #2}}%
+                              {\fig@missing{#2}}}}%
+% #1 = graphicx 完整参数（含 "="）  #2 = 文件名
+\newcommand{\fig@imgkey}[2]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+    \IfFileExists{\figpath #2}{\includegraphics[#1]{\figpath #2}}%
+                              {\fig@missing{#2}}}}%
+\NewDocumentCommand{\fig}{O{0.8\textwidth} m m o}{%
+  \begin{figure}[htbp]
+    \centering
+    \in@{=}{#1}%             含 "=" 视为 graphicx 参数，否则视为纯宽度值
+    \ifin@\fig@imgkey{#1}{#2}\else\fig@imgw{#1}{#2}\fi
+    \caption{#3}%
+    \IfValueTF{#4}{\label{#4}}{\label{fig:\thefigure}}%  自动生成标签 fig:图号
+    \huselabel{fig}{#3}%   登记“图题 → 图号”，供 \figref 引用
+  \end{figure}}
+%
+% 表格：\begin{tbl}[位置]{列格式}{表题}[引用标签] 表格内容 \end{tbl}
+%   表题在上方（表X-X 名称，五号宋体居中）、表内五号宋体 + 1.25 倍行距已内置；
+%   三线表直接用 booktabs 的 \toprule / \midrule / \bottomrule；
+%   编号与 \label 同样自动生成（默认标签 tab:表号），引用标签可省略。
+%   例：\begin{tbl}{llll}{字典表}
+%         \toprule 名字 & 类型 \\ \midrule ID & NUMBER(10) \\ \bottomrule
+%       \end{tbl}
+\NewDocumentEnvironment{tbl}{O{htbp} m m o}{%
+  \begin{table}[#1]
+    \centering
+    \caption{#3}%
+    \IfValueTF{#4}{\label{#4}}{\label{tab:\thetable}}%  自动生成标签 tab:表号
+    \huselabel{tab}{#3}%    登记“表题 → 表号”，供 \tabref 引用
+    \begin{tabular}{#2}%
+}{%
+    \end{tabular}%
+  \end{table}
+}
+
 %---------------------------- 目录 -----------------------------------
 \RequirePackage{tocloft}
 \renewcommand{\contentsname}{目\hspace{0.5em}录}   % “目录”两字中间空半格（模板实测）
@@ -223,6 +297,11 @@
   \linespread{1.731}\selectfont}                   % 条目固定行距 25 磅
 
 %-------------------------- 参考文献 ---------------------------------
+% 条目编号 [n] 由 thebibliography 自动生成，正文用 \cite{key} 引用即可，
+% 增删条目后编号自动重排，正文不用改；key 就是 \bibitem{key} 里的名字。
+%   \cite{key}   → [1]（与原文写法一致）
+%   \upcite{key} → 上标 [1]（评阅意见要求“在文中依次以上标的形式标出引用”时用）
+\newcommand{\upcite}[1]{\textsuperscript{\cite{#1}}}
 % 编号 [n] 后空一格；条目悬挂缩进 1.5 个字符，转行与上行作者名首字对齐
 \renewcommand{\@biblabel}[1]{[#1]\hspace{0.25em}}
 \patchcmd{\thebibliography}%      % 把 \leftmargin 由“编号宽+间隔”改为 1.5 字符
